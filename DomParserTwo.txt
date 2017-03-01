@@ -1,0 +1,89 @@
+package by.htp.xml.parse;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+//import org.apache.xerces.parsers.DOMParser;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+
+import by.htp.xml.model.Family;
+import by.htp.xml.model.Father;
+import by.htp.xml.model.Mother;
+
+public class DomParserTwo {
+	
+	
+	private static Element getStringChild(Element element, String childName){
+		NodeList nlist = element.getElementsByTagName(childName);
+		Element child = (Element)nlist.item(0);
+		return child;
+	}
+	
+	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException{
+	//DOMParser parser = new DOMParser();
+		Document document;
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder;
+		builder = factory.newDocumentBuilder();
+		document = builder.parse("resources/family.xml");
+	
+	Father father = null;
+	Mother mother = null;
+	NodeList mothers = document.getElementsByTagName("mother");
+	NodeList fathers = document.getElementsByTagName("father");
+	
+	for (int i = 0; i<mothers.getLength(); i++){
+		
+		mother = new Mother();
+		Element firstMother = (Element)mothers.item(i);
+		mother.setName(getStringChild(firstMother, "name").getTextContent().trim());
+		System.out.println("NAME: " + mother.getName());
+		mother.setSurname(getStringChild(firstMother, "surname").getTextContent().trim());
+		System.out.println("SURNAME: " + mother.getSurname());
+		mother.setMaiden_name(getStringChild(firstMother, "maidenname").getTextContent().trim());
+		System.out.println("MAIDEN NAME: " + mother.getMaiden_name());
+		String age = getStringChild(firstMother, "age").getTextContent().trim();
+		int yearsOld = Integer.parseInt(age);
+		mother.setAge(yearsOld);
+		System.out.println("AGE: " + mother.getAge());
+		int children = 0;
+//		children = Integer.parseInt(firstMother.getAttribute("count"));
+		mother.setChildren(children);
+		System.out.println("NUMBER OF CHILDREN: " + mother.getChildren());
+		
+		System.out.println();	
+	}
+	for (int i = 0; i<fathers.getLength(); i++){
+		
+		father = new Father();
+		Element firstFather = (Element)fathers.item(i);
+			
+	father.setName(getStringChild(firstFather, "name").getTextContent().trim());
+	System.out.println("NAME: " + father.getName());
+	father.setSurname(getStringChild(firstFather, "surname").getTextContent().trim());
+	System.out.println("SURNAME: " + father.getSurname());
+	String age = getStringChild(firstFather, "age").getTextContent().trim();
+	int yearsOld = Integer.parseInt(age);
+	father.setAge(yearsOld);
+	System.out.println("AGE: " + father.getAge());
+	int children1_1 = 0;
+//	children = Integer.parseInt(firstMother.getAttribute("count"));
+	father.setChildren(children1_1);
+	System.out.println("NUMBER OF CHILDREN: " + father.getChildren());
+	
+	System.out.println();
+	}
+	
+	
+	}
+
+}
